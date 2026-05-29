@@ -388,6 +388,120 @@ def root():
     }
 
 
+@app.get("/variables", tags=["Documentation"], summary="Dictionnaire des variables")
+def get_variables():
+    """Définition complète de toutes les variables utilisées par le modèle."""
+    return {
+        "variables_obligatoires": {
+            "culture": {
+                "description": "Type de culture à planter",
+                "exemple": "tomate, maïs, cacao, banane plantain...",
+                "pourquoi": "Chaque culture a un potentiel de rendement différent. C'est la variable la plus influente (40% de la prédiction)."
+            },
+            "region": {
+                "description": "Région administrative du Cameroun",
+                "exemple": "Centre, Ouest, Littoral, Sud...",
+                "pourquoi": "Détermine le climat, le type de sol dominant et les conditions agro-écologiques."
+            },
+            "saison": {
+                "description": "Saison de plantation",
+                "valeurs": ["grande_saison_pluies", "petite_saison_pluies", "saison_seche", "saison_unique"],
+                "pourquoi": "Le moment de plantation influence fortement la disponibilité en eau et le rendement."
+            },
+            "type_sol": {
+                "description": "Classification du sol de la parcelle",
+                "exemple": "ferrallitique, volcanique, argileux, sableux...",
+                "pourquoi": "Le type de sol conditionne la rétention d'eau, la fertilité naturelle et l'enracinement."
+            },
+            "ph_sol": {
+                "description": "Mesure d'acidité du sol (échelle de 3.5 à 9.0)",
+                "interpretation": "< 5.5 = acide, 5.5-7.0 = neutre (idéal), > 7.0 = basique",
+                "pourquoi": "Le pH contrôle la disponibilité des nutriments. Trop acide ou basique = les plantes n'absorbent pas les engrais.",
+                "comment_mesurer": "Kit pH de sol (~2000 FCFA) ou analyse en laboratoire."
+            },
+            "N_kgha": {
+                "description": "Azote disponible dans le sol (kg/ha)",
+                "plage": "0 à 400 kg/ha",
+                "pourquoi": "L'azote (N) favorise la croissance des feuilles et tiges. Carence = plante jaune et chétive.",
+                "comment_mesurer": "Analyse de sol en laboratoire ou estimation via la couleur des feuilles."
+            },
+            "P_kgha": {
+                "description": "Phosphore disponible dans le sol (kg/ha)",
+                "plage": "0 à 200 kg/ha",
+                "pourquoi": "Le phosphore (P) favorise l'enracinement et la floraison. Essentiel pour la fructification.",
+                "comment_mesurer": "Analyse de sol en laboratoire."
+            },
+            "K_kgha": {
+                "description": "Potassium disponible dans le sol (kg/ha)",
+                "plage": "0 à 500 kg/ha",
+                "pourquoi": "Le potassium (K) renforce la résistance aux maladies et améliore la qualité des fruits. 2ème variable la plus influente (35%).",
+                "comment_mesurer": "Analyse de sol en laboratoire."
+            },
+            "irrigation": {
+                "description": "Méthode d'apport en eau",
+                "valeurs": ["pluviale", "goutte-à-goutte", "aspersion", "gravitaire", "micro-aspersion"],
+                "pourquoi": "L'irrigation détermine l'efficacité de l'utilisation de l'eau et le stress hydrique de la plante."
+            },
+            "pratique_agricole": {
+                "description": "Mode de conduite de la culture",
+                "valeurs": ["traditionnelle", "améliorée", "intensive", "biologique", "conventionnelle"],
+                "pourquoi": "La pratique agricole englobe l'ensemble des techniques (densité, entretien, intrants) qui impactent le rendement."
+            },
+            "superficie_ha": {
+                "description": "Surface de la parcelle en hectares",
+                "plage": "0.1 à 100 ha",
+                "pourquoi": "Utilisée pour calculer la production totale (rendement × superficie). Peut influencer le rendement via les économies d'échelle."
+            }
+        },
+        "variables_optionnelles": {
+            "note": "Ces variables sont auto-remplies à partir des données historiques de votre région + saison si vous ne les fournissez pas.",
+            "temperature_C": {
+                "description": "Température moyenne pendant la saison de culture (°C)",
+                "plage": "5 à 50°C",
+                "pourquoi": "Chaque culture a une plage de température optimale. Trop chaud ou trop froid = stress thermique."
+            },
+            "precipitations_mm": {
+                "description": "Cumul des précipitations pendant la saison (mm)",
+                "plage": "0 à 5000 mm",
+                "pourquoi": "L'eau est le facteur limitant principal. Trop peu = sécheresse, trop = engorgement et maladies fongiques."
+            },
+            "humidite_pct": {
+                "description": "Humidité relative moyenne de l'air (%)",
+                "plage": "0 à 100%",
+                "pourquoi": "L'humidité influence l'évapotranspiration et le développement des maladies."
+            },
+            "altitude_m": {
+                "description": "Altitude de la parcelle (mètres au-dessus du niveau de la mer)",
+                "plage": "0 à 4000 m",
+                "pourquoi": "L'altitude modifie la température, la pression et les conditions de croissance. Ex: le café arabica pousse mieux en altitude."
+            },
+            "matiere_organique_pct": {
+                "description": "Pourcentage de matière organique dans le sol",
+                "plage": "0 à 15%",
+                "pourquoi": "La matière organique améliore la structure du sol, la rétention d'eau et la vie microbienne. Sol riche > 3%."
+            }
+        },
+        "variables_calculees_automatiquement": {
+            "note": "Ces variables sont calculées par le modèle, l'utilisateur n'a pas besoin de les fournir.",
+            "rayonnement_MJm2": "Énergie solaire reçue (MJ/m²) — influence la photosynthèse",
+            "etp_mmd": "Évapotranspiration potentielle (mm/jour) — besoin en eau théorique de la plante",
+            "NK_ratio": "Ratio Azote/Potassium — équilibre nutritif",
+            "NP_ratio": "Ratio Azote/Phosphore — équilibre nutritif",
+            "NPK_total": "Somme N+P+K — fertilité globale du sol",
+            "indice_aridite": "ETP/Précipitations — indicateur de sécheresse",
+            "bilan_hydrique": "Précipitations - ETP — excès ou déficit d'eau",
+            "temp_x_humidite": "Interaction température × humidité — confort climatique de la plante"
+        },
+        "variable_cible": {
+            "rendement_tha": {
+                "description": "Rendement en tonnes par hectare (t/ha)",
+                "pourquoi": "C'est ce que le modèle prédit. Exemple: 3.5 t/ha signifie 3500 kg récoltés sur 1 hectare.",
+                "interpretation": "Varie selon la culture : 1-3 t/ha pour les céréales, 5-30 t/ha pour le maraîchage."
+            }
+        }
+    }
+
+
 @app.get("/cultures", tags=["Références"], summary="24 cultures disponibles")
 def get_cultures():
     """Liste des cultures reconnues par le modèle."""
