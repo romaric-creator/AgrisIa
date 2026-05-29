@@ -1,0 +1,36 @@
+# Data (garder uniquement les fichiers nécessaires à l'API)
+data/raw/CMR DS01*.csv
+data/raw/CMR DS02*.csv
+data/raw/CMR DS03*.csv
+data/raw/CMR DS04*.csv
+data/raw/CMR DS05*.csv
+data/raw/CMR DS06*.csv
+data/raw/CMR DS07*.csv
+data/raw/CMR DS08*.csv
+data/raw/CMR DS09*.csv
+data/processed/X_*.csv
+data/processed/y_*.csv
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Models (garder les .joblib, exclure les gros .keras/.pkl)
+models/*.pkl
+models/*.keras
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env

@@ -1,0 +1,155 @@
+{
+  "info": {
+    "name": "API Rendement Agricole Cameroun",
+    "description": "Collection Postman pour tester l'API de prédiction de rendement agricole au Cameroun",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Informations",
+      "item": [
+        {
+          "name": "Accueil",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/",
+            "header": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "Références",
+      "item": [
+        {
+          "name": "Liste des cultures",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/cultures",
+            "header": []
+          }
+        },
+        {
+          "name": "Liste des régions",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/regions",
+            "header": []
+          }
+        },
+        {
+          "name": "Liste des types de sol",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/types-sol",
+            "header": []
+          }
+        },
+        {
+          "name": "Liste des irrigations",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/irrigations",
+            "header": []
+          }
+        },
+        {
+          "name": "Liste des pratiques agricoles",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/pratiques",
+            "header": []
+          }
+        },
+        {
+          "name": "Liste des saisons",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/saisons",
+            "header": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "Prédiction",
+      "item": [
+        {
+          "name": "Prédire rendement (minimal)",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/predict",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"culture\": \"tomate\",\n  \"region\": \"Centre\",\n  \"saison\": \"grande_saison_pluies\",\n  \"type_sol\": \"ferrallitique\",\n  \"ph_sol\": 5.8,\n  \"N_kgha\": 80,\n  \"P_kgha\": 40,\n  \"K_kgha\": 100,\n  \"irrigation\": \"goutte-à-goutte\",\n  \"pratique_agricole\": \"améliorée\",\n  \"superficie_ha\": 2.0\n}"
+            }
+          }
+        },
+        {
+          "name": "Prédire rendement (complet avec optionnels)",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/predict",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"culture\": \"maïs\",\n  \"region\": \"Ouest\",\n  \"saison\": \"petite_saison_pluies\",\n  \"type_sol\": \"volcanique\",\n  \"ph_sol\": 6.2,\n  \"N_kgha\": 120,\n  \"P_kgha\": 60,\n  \"K_kgha\": 150,\n  \"irrigation\": \"aspersion\",\n  \"pratique_agricole\": \"intensive\",\n  \"superficie_ha\": 5.0,\n  \"temperature_C\": 22.5,\n  \"precipitations_mm\": 1200,\n  \"humidite_pct\": 75,\n  \"altitude_m\": 1400,\n  \"matiere_organique_pct\": 3.5\n}"
+            }
+          }
+        },
+        {
+          "name": "Prédire rendement (petite parcelle)",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/predict",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"culture\": \"cacao\",\n  \"region\": \"Sud\",\n  \"saison\": \"grande_saison_pluies\",\n  \"type_sol\": \"ferrallitique\",\n  \"ph_sol\": 5.5,\n  \"N_kgha\": 50,\n  \"P_kgha\": 25,\n  \"K_kgha\": 80,\n  \"irrigation\": \"pluviale\",\n  \"pratique_agricole\": \"traditionnelle\",\n  \"superficie_ha\": 0.5\n}"
+            }
+          }
+        },
+        {
+          "name": "Prédire rendement (erreur - valeur invalide)",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/predict",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"culture\": \"culture_inexistante\",\n  \"region\": \"Centre\",\n  \"saison\": \"grande_saison_pluies\",\n  \"type_sol\": \"ferrallitique\",\n  \"ph_sol\": 5.8,\n  \"N_kgha\": 80,\n  \"P_kgha\": 40,\n  \"K_kgha\": 100,\n  \"irrigation\": \"goutte-à-goutte\",\n  \"pratique_agricole\": \"améliorée\",\n  \"superficie_ha\": 2.0\n}"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
